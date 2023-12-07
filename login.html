@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant</title>
     <link rel="stylesheet" href="style.css">
+    <title>User</title>
 </head>
 <body>
     <div class="header">
@@ -18,12 +18,17 @@
         </ul>
         <button class="login" onclick="goToLogin()">Log In</button>
     </div>
-    <div class="main">
-        <div class="container">
-            Welcome
-            <img src="images/logo.jpg" alt="Logo" width="225">
-            <button class="bookTable" onclick="goToReservation()">Book a table</button>
-        </div>
+    <div id="login-container">
+        <h2>Login</h2>
+        <form action="process-login.php" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
     </div>
     <div class="footer">
         <p>Phone: 123456789</p>
@@ -31,12 +36,10 @@
     </div>
 
     <script>
-        function goToReservation() {
-            window.location.href="reservation.html";
-        }
         function goToLogin() {
             window.location.href = "login.html";
         }
     </script>
+    
 </body>
 </html>

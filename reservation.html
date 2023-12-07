@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant</title>
     <link rel="stylesheet" href="style.css">
+    <title>Reservation</title>
 </head>
 <body>
     <div class="header">
@@ -18,22 +18,12 @@
         </ul>
         <button class="login" onclick="goToLogin()">Log In</button>
     </div>
-    <div class="main">
-        <div class="container">
-            Welcome
-            <img src="images/logo.jpg" alt="Logo" width="225">
-            <button class="bookTable" onclick="goToReservation()">Book a table</button>
-        </div>
-    </div>
     <div class="footer">
         <p>Phone: 123456789</p>
         <p>Email: example@gmail.com</p>
     </div>
 
     <script>
-        function goToReservation() {
-            window.location.href="reservation.html";
-        }
         function goToLogin() {
             window.location.href = "login.html";
         }
