@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="reservation.js" defer></script>
     <title>Reservation</title>
 </head>
 <body>
@@ -19,23 +20,42 @@
         <button class="login" onclick="goToLogin()">Log In</button>
     </div>
     <div class="reservation">
-        <select name="branch" id="branches">
-            <option value="" disabled selected>Select a location</option>
-            <option value="Tower-bridge">Tower Bridge</option>
-            <option value="Oxford-street">Oxford Street</option>
-            <option value="Kingston">Kingston</option>
-        </select>
-        <label for="group">Select group number:</label>
-        <select name="group" id="group">
-            <option value="" disabled selected>select group number</option>
-            <option value="2">2 guests</option>
-            <option value="3">3 guests</option>
-            <option value="4">4 guests</option>
-            <option value="5">5 guests</option>
-            <option value="6">6 guests</option>
-            <option value="7">7 guests</option>
-            <option value="8">8 guests</option>
-        </select>
+        <div class="booking">
+            <label for="branch">Select a branch:</label>
+            <select name="branch" id="branches" required>
+                <option value="" disabled selected>Location</option>
+                <option value="Tower-bridge">Tower Bridge</option>
+                <option value="Oxford-street">Oxford Street</option>
+                <option value="Kingston">Kingston</option>
+            </select>
+            <label for="group">Select group number:</label>
+            <select name="group" id="group" required>
+                <option value="" disabled selected>Group size</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5">5 guests</option>
+                <option value="6">6 guests</option>
+                <option value="7">7 guests</option>
+                <option value="8">8 guests</option>
+            </select>
+            <label for="date">Select a date:</label>
+            <input type="date" id="date" required>
+            <button id="timeButton">Check Times</button>
+            <label for="time">Select a time:</label>
+            <select name="time" id="time" required></select>
+        </div>
+        <div class="details">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+            <label for="firstName">First Name:</label>
+            <input type="firstName" required>
+            <label for="lastName">Last Name:</label>
+            <input type="lastName" required>
+        </div>
+        <div id="submit">
+            <button id="submitButton">Submit</button>
+        </div>
     </div>
     <div class="footer">
         <p>Phone: 123456789</p>

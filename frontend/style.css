@@ -100,7 +100,28 @@ button {
 .reservation {
     color: aliceblue;
     display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.booking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 16px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-around;
+    padding: 16px;
+    gap: 16px;
+}
+
+#submit {
+    display: flex;
+    justify-content: center;
 }
 
 .footer {
