@@ -97,6 +97,12 @@ button {
     max-width: 650px;
 }
 
+.reservation {
+    color: aliceblue;
+    display: flex;
+    gap: 16px;
+}
+
 .footer {
     color: aliceblue;
     display: flex;
