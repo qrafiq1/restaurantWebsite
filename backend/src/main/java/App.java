@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) throws IOException, SQLException {
@@ -41,8 +43,6 @@ public class App {
 
         Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
-        System.out.println("i am here");
-
         // Define routes
         Spark.get("/hello", (req, res) -> "Hello, World!");
 
@@ -51,9 +51,6 @@ public class App {
                 JsonObject jsonBody = new Gson().fromJson(req.body(), JsonObject.class);
                 String location = jsonBody.get("location").getAsString();
                 String group = jsonBody.get("group").getAsString();
-
-                System.out.println(location);
-                System.out.println(group);
 
                 String sqlQuery = "SELECT b.BookingTime " +
                         "FROM Booking b " +
@@ -67,14 +64,14 @@ public class App {
 
                 ResultSet resultSet = statement.executeQuery();
 
+                List<String> resultList = new ArrayList<>();
                 while (resultSet.next()) {
-                    System.out.println("BookingDate: " + resultSet.getString("BookingTime"));
+                    System.out.println(resultSet.getString("BookingTime"));
+                    resultList.add(resultSet.getString("BookingTime"));
                 }
 
-                // Process the result set
-
-                // Return a JSON response (example)
-                return new Gson().toJson("Query successful! Reached");
+                res.type("application/json");
+                return new Gson().toJson(resultList);
             } catch (SQLException e) {
                 e.printStackTrace();
                 res.status(500);

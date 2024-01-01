@@ -10,6 +10,16 @@ const lastNameInput = document.querySelector('#lastName');
 const timeButton = document.querySelector('#bookingButton');
 const submitButton = document.querySelector('#submitButton');
 
+function updateAvailibilty(data) {
+    availablityInput.innerHTML = '';
+
+    data.forEach(result => {
+        const option = document.createElement('option');
+        option.value = result.trim();
+        option.textContent = result.trim();
+        availablityInput.appendChild(option);
+    });
+}
 
 
 //sends info to backend and returns updated list of available times to pick
@@ -28,9 +38,9 @@ timeButton.addEventListener('click', () => {
     })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the backend
             console.log('Success:', data);
             // Update the UI or take other actions based on the response
+            updateAvailibilty(data);
         })
         .catch(error => {
             console.error('Error:', error);
