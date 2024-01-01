@@ -7,17 +7,16 @@ const availablityInput = document.querySelector('#availabilty');
 const emailInput = document.querySelector('#email');
 const firstNameInput = document.querySelector('#firstName');
 const lastNameInput = document.querySelector('#lastName');
-const timeButton = document.querySelector('#timeButton');
+const timeButton = document.querySelector('#bookingButton');
 const submitButton = document.querySelector('#submitButton');
 
-dateControl.value = formattedDate;
+
 
 //sends info to backend and returns updated list of available times to pick
 timeButton.addEventListener('click', () => {
     const timeData = {
         location: locationInput.value,
         group: groupInput.value,
-        date: availablityInput.value
     };
 
     fetch('http://localhost:8080/query', {
@@ -25,7 +24,7 @@ timeButton.addEventListener('click', () => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(timeData),
     })
         .then(response => response.json())
         .then(data => {

@@ -1,5 +1,7 @@
 import spark.Spark;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import javax.sql.DataSource;
 
 import java.io.IOException;
@@ -16,30 +18,63 @@ public class App {
         // Set up database connection pool
         DataSource dataSource = DatabaseConnector.createConnectionPool();
 
+        // Enable CORS for all routes
+        Spark.options("/*",
+                (request, response) -> {
+
+                    String accessControlRequestHeaders = request
+                            .headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers",
+                                accessControlRequestHeaders);
+                    }
+
+                    String accessControlRequestMethod = request
+                            .headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods",
+                                accessControlRequestMethod);
+                    }
+
+                    return "OK";
+                });
+
+        Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+
+        System.out.println("i am here");
+
         // Define routes
         Spark.get("/hello", (req, res) -> "Hello, World!");
 
         Spark.post("/query", (req, res) -> {
             try (Connection connection = dataSource.getConnection()) {
-                String location = req.queryParams("location");
-                String group = req.queryParams("group");
-                String date = req.queryParams("date");
+                JsonObject jsonBody = new Gson().fromJson(req.body(), JsonObject.class);
+                String location = jsonBody.get("location").getAsString();
+                String group = jsonBody.get("group").getAsString();
+
+                System.out.println(location);
+                System.out.println(group);
+
+                String sqlQuery = "SELECT b.BookingTime " +
+                        "FROM Booking b " +
+                        "JOIN Restaurant r ON b.RestaurantID = r.RestaurantID " +
+                        "WHERE r.RestaurantName = '" + location + "' AND b.isAvailable = 1";
 
                 // Use the connection to query the database
-                PreparedStatement statement = connection.prepareStatement("SELECT b.BookingTime AS BookingDate\r\n" + //
-                        "FROM Booking b\r\n" + //
-                        "JOIN Restaurant r ON b.RestaurantID = r.RestaurantID\r\n" + //
-                        "WHERE r.RestaurantName = " + location + //
-                        "  AND b.isAvailable = 1;\r\n" + //
-                        "");
+                PreparedStatement statement = connection.prepareStatement(sqlQuery);
+
+                System.out.println(statement.toString());
+
                 ResultSet resultSet = statement.executeQuery();
 
-                System.out.println(resultSet);
+                while (resultSet.next()) {
+                    System.out.println("BookingDate: " + resultSet.getString("BookingTime"));
+                }
 
                 // Process the result set
 
                 // Return a JSON response (example)
-                return new Gson().toJson("Query successful!");
+                return new Gson().toJson("Query successful! Reached");
             } catch (SQLException e) {
                 e.printStackTrace();
                 res.status(500);

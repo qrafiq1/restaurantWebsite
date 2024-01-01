@@ -21,7 +21,7 @@
     </div>
     <div class="reservation">
         <div class="booking">
-            <label for="branch">Select a branch:</label>
+            <label for="branches">Select a branch:</label>
             <select name="branch" id="branches" required>
                 <option value="" disabled selected>Location</option>
                 <option value="Culinary Delight">Romford Road</option>
@@ -45,11 +45,11 @@
         </div>
         <div class="details">
             <label for="email">Email:</label>
-            <input type="email" id="email" required>
-            <label for="firstName">First Name:</label>
-            <input type="firstName" required>
+            <input type="email" id="email" autocomplete="email" required>
+            <label for="firstName" >First Name:</label>
+            <input type="firstName" id="firstName" required>
             <label for="lastName">Last Name:</label>
-            <input type="lastName" required>
+            <input type="lastName" id="lastName" required>
         </div>
         <div id="submit">
             <button id="submitButton">Submit</button>
