@@ -37,7 +37,7 @@ timeButton.addEventListener('click', () => {
         group: groupInput.value,
     };
 
-    fetch('https://20240102t211054-dot-restaurant-407220.uc.r.appspot.com/query', {
+    fetch('https://20240102t221142-dot-restaurant-407220.uc.r.appspot.com/query', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ submitButton.addEventListener('click', () => {
         lastName: lastNameInput.value
     }
 
-    fetch('https://20240102t211054-dot-restaurant-407220.uc.r.appspot.com/submitBooking', {
+    fetch('https://20240102t221142-dot-restaurant-407220.uc.r.appspot.com/submitBooking', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
