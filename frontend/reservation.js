@@ -21,6 +21,14 @@ function updateAvailibilty(data) {
     });
 }
 
+function redirect() {
+    setTimeout(myURL, 5000);
+    alert("Booking Complete!\nYou will now be returned to the home page.");
+}
+
+function myURL() {
+    document.location.href = 'index.html';
+}
 
 //sends info to backend and returns updated list of available times to pick
 timeButton.addEventListener('click', () => {
@@ -48,8 +56,6 @@ timeButton.addEventListener('click', () => {
 });
 
 //sends booking info with user info to backend to complete booking
-//if complete == true, send to webpage saying complete
-//would also intiate email sending here
 submitButton.addEventListener('click', () => {
     const bookingData = {
         location: locationInput.value,
@@ -73,9 +79,9 @@ submitButton.addEventListener('click', () => {
             console.log('Success:', data);
             // Check if the booking was successful and update the UI accordingly
             if (data.complete) {
-                // Booking is complete, show success message or navigate to a success page
+                redirect();
             } else {
-                // Booking failed, handle the error
+                alert("Booking failed\nPlease refresh and try again.")
             }
         })
         .catch(error => {
