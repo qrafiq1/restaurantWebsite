@@ -45,6 +45,10 @@ public class App {
                                 accessControlRequestMethod);
                     }
 
+                    response.header("Access-Control-Allow-Origin", "*");
+                    response.header("Access-Control-Allow-Credentials", "true");
+                    response.header("Access-Control-Max-Age", "3600");
+
                     return "OK";
                 });
 
