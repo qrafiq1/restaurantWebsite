@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import javax.sql.DataSource;
 
+import java.sql.Statement;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -81,18 +82,68 @@ public class App {
 
         Spark.post("/submitBooking", (req, res) -> {
             try (Connection connection = dataSource.getConnection()) {
-                String location = req.queryParams("location");
-                String group = req.queryParams("group");
-                String date = req.queryParams("date");
-                String email = req.queryParams("email");
-                String firstName = req.queryParams("firstName");
-                String lastName = req.queryParams("lastName");
+                JsonObject jsonBody = new Gson().fromJson(req.body(), JsonObject.class);
 
-                // Use the connection to perform the booking operation
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM User");
-                ResultSet resultSet = statement.executeQuery();
+                String location = jsonBody.get("location").getAsString();
+                String date = jsonBody.get("date").getAsString();
+                String email = jsonBody.get("email").getAsString();
+                String firstName = jsonBody.get("firstName").getAsString();
+                String lastName = jsonBody.get("lastName").getAsString();
 
-                // Process the result set
+                int userID = 0;
+
+                String bookingUpdateQuery = "UPDATE Booking b JOIN Restaurant r ON b.restaurantID = r.restaurantID SET UserID = ?, isAvailable = 0 WHERE BookingTime = ? AND isAvailable = 1 AND restaurantName = ?;";
+                String checkUserQuery = "SELECT * FROM User WHERE UserEmail = ?";
+                String addUserQuery = "INSERT INTO User (FirstName, LastName, UserEmail) VALUES (?, ?, ?)";
+
+                try (PreparedStatement checkUserStatement = connection.prepareStatement(checkUserQuery)) {
+                    checkUserStatement.setString(1, email);
+                    ResultSet resultSet = checkUserStatement.executeQuery();
+
+                    if (resultSet.next()) {
+                        System.out.println("User exists");
+                        userID = resultSet.getInt("UserID");
+                        System.out.println("existing user ID: " + userID);
+                    } else {
+                        // Add user if not exists
+                        try (PreparedStatement addUserStatement = connection.prepareStatement(addUserQuery,
+                                Statement.RETURN_GENERATED_KEYS)) {
+                            addUserStatement.setString(1, firstName);
+                            addUserStatement.setString(2, lastName);
+                            addUserStatement.setString(3, email);
+
+                            // gets new users ID
+                            int affectedRows = addUserStatement.executeUpdate();
+
+                            if (affectedRows > 0) {
+                                // Retrieve the generated keys
+                                try (ResultSet generatedKeys = addUserStatement.getGeneratedKeys()) {
+                                    if (generatedKeys.next()) {
+                                        userID = generatedKeys.getInt(1);
+                                        System.out.println("New user added with UserID: " + userID);
+                                    } else {
+                                        System.out.println("Error retrieving UserID after insertion.");
+                                    }
+                                }
+                            } else {
+                                System.out.println("No rows were affected by the insertion.");
+                            }
+                        }
+                    }
+                }
+
+                try (PreparedStatement addBooking = connection.prepareStatement(bookingUpdateQuery)) {
+                    addBooking.setInt(1, userID);
+                    addBooking.setString(2, date);
+                    addBooking.setString(3, location);
+
+                    addBooking.executeUpdate();
+
+                    System.out.println("booking added!");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("failed");
+                }
 
                 // Return a JSON response (example)
                 return new Gson().toJson("Booking submitted!");
