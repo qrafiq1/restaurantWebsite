@@ -9,7 +9,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws IOException, SQLException {
 
-        Spark.port(getPort());
+        Spark.port(8080);
 
         DataSource dataSource = DatabaseConnector.createConnectionPool();
 
@@ -28,27 +28,14 @@ public class App {
 
     // Enable CORS for all routes
     private static void enableCORS() {
-        Spark.options("/*",
-                (request, response) -> {
+        Spark.options("/*", (request, response) -> {
+            response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept");
+            response.header("Access-Control-Allow-Credentials", "true");
+            return "OK";
+        });
 
-                    String accessControlRequestHeaders = request
-                            .headers("Access-Control-Request-Headers");
-                    if (accessControlRequestHeaders != null) {
-                        response.header("Access-Control-Allow-Headers",
-                                accessControlRequestHeaders);
-                    }
-
-                    String accessControlRequestMethod = request
-                            .headers("Access-Control-Request-Method");
-                    if (accessControlRequestMethod != null) {
-                        response.header("Access-Control-Allow-Methods",
-                                accessControlRequestMethod);
-                    }
-
-                    return "OK";
-                });
-
-        Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "http://127.0.0.1:3000"));
+        Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
     }
 
     private static String handleQuery(DatabaseHandler databaseHandler, String requestBody) {
