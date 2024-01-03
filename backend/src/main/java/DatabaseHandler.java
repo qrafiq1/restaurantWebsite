@@ -15,10 +15,11 @@ public class DatabaseHandler {
     }
 
     public List<String> getAvailabilty(String location, int groupSize) throws SQLException {
-        String getAvailabiltyQuery = "SELECT b.BookingTime FROM Booking b JOIN Restaurant r ON b.RestaurantID = r.RestaurantID WHERE r.RestaurantName = ? AND b.isAvailable = 1";
+        String getAvailabiltyQuery = "SELECT b.bookingTime FROM Booking b JOIN Restaurant r ON b.RestaurantID = r.RestaurantID JOIN DiningTable dt ON b.TableID = dt.TableID WHERE r.RestaurantName = ? AND dt.TableCapacity >= ? AND b.isAvailable = 1";
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement getAvailabiltyStatement = connection.prepareStatement(getAvailabiltyQuery)) {
             getAvailabiltyStatement.setString(1, location);
+            getAvailabiltyStatement.setInt(2, groupSize);
 
             ResultSet resultSet = getAvailabiltyStatement.executeQuery();
 

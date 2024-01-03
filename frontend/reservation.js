@@ -23,7 +23,7 @@ function updateAvailibilty(data) {
 
 function redirect() {
     setTimeout(myURL, 5000);
-    alert("Booking Complete!\nYou will now be returned to the home page.");
+    alert("Booking Complete!\nBooking details have been sent to your email.\nYou will now be returned to the home page.");
 }
 
 function myURL() {
@@ -37,7 +37,7 @@ timeButton.addEventListener('click', () => {
         group: groupInput.value,
     };
 
-    fetch('https://backend-service-dot-restaurant-407220.uc.r.appspot.com/query', {
+    fetch('http://localhost:8080/query', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ submitButton.addEventListener('click', () => {
         lastName: lastNameInput.value
     }
 
-    fetch('https://backend-service-dot-restaurant-407220.uc.r.appspot.com/submitBooking', {
+    fetch('http://localhost:8080/submitBooking', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ submitButton.addEventListener('click', () => {
             // Handle the response from the backend
             console.log('Success:', data);
             // Check if the booking was successful and update the UI accordingly
-            if (data.complete) {
+            if (data === "Booking submitted!") {
                 redirect();
             } else {
                 alert("Booking failed\nPlease refresh and try again.")
