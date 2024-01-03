@@ -48,8 +48,7 @@ public class App {
                     return "OK";
                 });
 
-        Spark.before((request, response) -> response.header("Access-Control-Allow-Origin",
-                "https://restaurant-407220.uc.r.appspot.com"));
+        Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "http://127.0.0.1:3000"));
     }
 
     private static String handleQuery(DatabaseHandler databaseHandler, String requestBody) {
