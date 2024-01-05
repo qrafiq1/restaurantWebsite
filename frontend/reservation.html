@@ -9,15 +9,17 @@
 </head>
 <body>
     <div class="header">
-        <a href="index.html">
-            <img src="" alt="Logo">
+        <a href="index.html" id="home">
+            <img src="images/logo.jpg" alt="Logo" width="80">
         </a>
         <ul class="links">
             <li><a href="about.html">About</a></li>
             <li><a href="menu.html">Menu</a></li>
             <li><a href="reservation.html">Reservation</a></li>
         </ul>
-        <button class="login" onclick="goToLogin()">Log In</button>
+        <div id="empty">
+            sfddsfsdfsdf
+        </div>
     </div>
     <div class="reservation">
         <div class="booking">
@@ -25,7 +27,7 @@
             <select name="branch" id="branches" required>
                 <option value="" disabled selected>Location</option>
                 <option value="Culinary Delight">Romford Road</option>
-                <option value="Flavours Delight">Edgware Road</option>
+                <option value="Flavors Delight">Edgware Road</option>
                 <option value="Savory Haven">Oak Street</option>
             </select>
             <label for="group">Select group number:</label>
@@ -57,13 +59,7 @@
     </div>
     <div class="footer">
         <p>Phone: 123456789</p>
-        <p>Email: example@gmail.com</p>
+        <p>Email: resturant298@gmail.com</p>
     </div>
-
-    <script>
-        function goToLogin() {
-            window.location.href = "login.html";
-        }
-    </script>
 </body>
 </html>

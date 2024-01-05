@@ -1,3 +1,5 @@
 App.class
 DatabaseConnector.class
 DatabaseHandler.class
+EmailSender$1.class
+EmailSender.class

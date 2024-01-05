@@ -66,6 +66,8 @@ public class App {
 
             databaseHandler.updateBooking(userID, date, location);
 
+            EmailSender.sendEmail(email, firstName, lastName, location, date);
+
             return new Gson().toJson("Booking submitted!");
         } catch (SQLException e) {
             e.printStackTrace();
