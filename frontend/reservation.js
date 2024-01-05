@@ -37,7 +37,7 @@ timeButton.addEventListener('click', () => {
         group: groupInput.value,
     };
 
-    fetch('http://localhost:8080/query', {
+    fetch('https://backend-service-dot-restaurant-407220.uc.r.appspot.com/query', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ submitButton.addEventListener('click', () => {
         lastName: lastNameInput.value
     }
 
-    fetch('http://localhost:8080/submitBooking', {
+    fetch('https://backend-service-dot-restaurant-407220.uc.r.appspot.com/submitBooking', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
