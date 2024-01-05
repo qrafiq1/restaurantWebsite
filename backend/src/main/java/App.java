@@ -75,11 +75,4 @@ public class App {
             return "Internal Server Error";
         }
     }
-
-    private static int getPort() {
-        // For local testing, use a specific port
-        // For App Engine deployment, use the PORT environment variable
-        String portStr = System.getenv("PORT");
-        return (portStr != null) ? Integer.parseInt(portStr) : 8080;
-    }
 }
