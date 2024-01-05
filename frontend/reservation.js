@@ -1,6 +1,8 @@
+// Get the current date in ISO format
 const todayDate = new Date();
 const formattedDate = todayDate.toISOString().split('T')[0];
 
+// DOM elements
 const locationInput = document.querySelector('#branches');
 const groupInput = document.querySelector('#group');
 const availablityInput = document.querySelector('#availabilty');
@@ -10,6 +12,7 @@ const lastNameInput = document.querySelector('#lastName');
 const timeButton = document.querySelector('#bookingButton');
 const submitButton = document.querySelector('#submitButton');
 
+// Function to update the availability options in the UI
 function updateAvailibilty(data) {
     availablityInput.innerHTML = '';
 
@@ -21,16 +24,18 @@ function updateAvailibilty(data) {
     });
 }
 
+// Function to redirect to the home page after a delay
 function redirect() {
     setTimeout(myURL, 5000);
     alert("Booking Complete!\nBooking details have been sent to your email.\nYou will now be returned to the home page.");
 }
 
+// Function to change the URL
 function myURL() {
     document.location.href = 'index.html';
 }
 
-//sends info to backend and returns updated list of available times to pick
+// Event listener for fetching available times based on location and group size
 timeButton.addEventListener('click', () => {
     const timeData = {
         location: locationInput.value,
@@ -55,7 +60,7 @@ timeButton.addEventListener('click', () => {
         });
 });
 
-//sends booking info with user info to backend to complete booking
+// Event listener for submitting booking details to the backend
 submitButton.addEventListener('click', () => {
     const bookingData = {
         location: locationInput.value,
@@ -88,4 +93,3 @@ submitButton.addEventListener('click', () => {
             console.error('Error:', error);
         });
 });
-

@@ -10,10 +10,24 @@ public class DatabaseHandler {
 
     private DataSource dataSource;
 
+    /**
+     * Constructs a DatabaseHandler with the specified DataSource.
+     *
+     * @param dataSource The DataSource used for database connections.
+     */
     public DatabaseHandler(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * Retrieves the availability of bookings for a given location and group size.
+     *
+     * @param location  The name of the restaurant location.
+     * @param groupSize The size of the dining group.
+     * @return A list of booking times available for the specified location and
+     *         group size.
+     * @throws SQLException If a database access error occurs.
+     */
     public List<String> getAvailabilty(String location, int groupSize) throws SQLException {
         String getAvailabiltyQuery = "SELECT b.bookingTime FROM Booking b JOIN Restaurant r ON b.RestaurantID = r.RestaurantID JOIN DiningTable dt ON b.TableID = dt.TableID WHERE r.RestaurantName = ? AND dt.TableCapacity >= ? AND b.isAvailable = 1";
         try (Connection connection = dataSource.getConnection();
@@ -31,6 +45,16 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Checks if a user with the given email exists. If not, adds the user to the
+     * database.
+     *
+     * @param email     The email address of the user.
+     * @param firstName The first name of the user.
+     * @param lastName  The last name of the user.
+     * @return The user ID.
+     * @throws SQLException If a database access error occurs.
+     */
     public int checkUser(String email, String firstName, String lastName) throws SQLException {
         String checkUserQuery = "SELECT * FROM User WHERE UserEmail = ?";
         try (Connection connection = dataSource.getConnection();
@@ -41,11 +65,22 @@ public class DatabaseHandler {
 
             if (resultSet.next()) {
                 return resultSet.getInt("UserID");
-            } else
+            } else {
+                // User does not exist, add the user to the database
                 return addUser(email, firstName, lastName);
+            }
         }
     }
 
+    /**
+     * Adds a new user to the database.
+     *
+     * @param email     The email address of the user.
+     * @param firstName The first name of the user.
+     * @param lastName  The last name of the user.
+     * @return The user ID.
+     * @throws SQLException If a database access error occurs.
+     */
     public int addUser(String email, String firstName, String lastName) throws SQLException {
         String addUserQuery = "INSERT INTO User (FirstName, LastName, UserEmail) VALUES (?, ?, ?)";
         try (Connection connection = dataSource.getConnection();
@@ -72,6 +107,15 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Updates a booking in the database with the specified user ID, date, and
+     * location.
+     *
+     * @param userID   The user ID associated with the booking.
+     * @param date     The booking date.
+     * @param location The restaurant location.
+     * @throws SQLException If a database access error occurs.
+     */
     public void updateBooking(int userID, String date, String location) throws SQLException {
         String updateBookingQuery = "UPDATE Booking b JOIN Restaurant r ON b.restaurantID = r.restaurantID SET UserID = ?, isAvailable = 0 WHERE BookingTime = ? AND isAvailable = 1 AND restaurantName = ?;";
         try (Connection connection = dataSource.getConnection();
