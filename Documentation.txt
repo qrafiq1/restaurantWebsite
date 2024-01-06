@@ -1,0 +1,1 @@
+Only change when implementing is Google Authentication, instead we went with JavaMail to send booking details straight to the user.
